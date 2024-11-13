@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="circle">
+        <button class="startButton">START</button>
+    </div>
+    <div class="speedResult">Speed: <span id="speedValue">0</span> Mbps</div>
+
+
+    <script>
+        const startButton = document.querySelector('.startButton');
+        const speedResult = document.querySelector('.speedResult');
+        const speedValue = document.getElementById('speedValue');
+    
+        startButton.addEventListener('click', function() {
+            // Toggle color
+            if (this.style.color === 'red') {
+                this.style.color = 'black';
+            } else {
+                this.style.color = 'red';
+            }
+    
+            // Start speed test
+            measureSpeed();
+        });
+    
+        function measureSpeed() {
+            const imageUrl = "https://www.gstatic.com/webp/gallery/1.jpg"; // A sample image URL to measure download speed
+            const startTime = new Date().getTime();
+            const download = new Image();
+    
+            download.src = imageUrl + "?n=" + Math.random(); // Append random number to avoid cache
+            download.onload = function() {
+                const endTime = new Date().getTime();
+                const duration = (endTime - startTime) / 1000; // Convert to seconds
+                const fileSize = 500000; // Size of the image in bytes (500 KB)
+                const bitsLoaded = fileSize * 8; // Convert to bits
+                const speedMbps = (bitsLoaded / duration / 1000000).toFixed(2); // Speed in Mbps
+    
+                // Display the result
+                speedValue.textContent = speedMbps;
+            };
+    
+            download.onerror = function() {
+                speedValue.textContent = "Error measuring speed.";
+            };
+        }
+    </script>
+   
+    
+</body>
+</html>
